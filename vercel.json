@@ -20,11 +20,11 @@
     },
     {
       "src": "/assets/(.*)",
-      "dest": "Frontend/assets/$1"
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "Frontend/index.html"
+      "dest": "/index.html"
     }
   ]
 }
