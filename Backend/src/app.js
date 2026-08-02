@@ -11,7 +11,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", /\.vercel\.app$/],
     credentials: true,
 }));
 app.use(express.json());
@@ -36,9 +36,12 @@ initalizeSocket(server);
 connectDB()
     .then(() => {
         console.log("Database connection established...");
-        server.listen(7777, () => {
-            console.log("Server is successfully listening on port 7777...");
-        });
+        // Only listen if not running in a serverless environment like Vercel
+        if (process.env.NODE_ENV !== 'production') {
+            server.listen(7777, () => {
+                console.log("Server is successfully listening on port 7777...");
+            });
+        }
     })
     .catch((err) => {
         console.error("Database cannot be connected!!");
@@ -47,3 +50,5 @@ connectDB()
         process.exit(1);
     });
 
+// Export the Express app for Vercel Serverless Functions
+module.exports = app;
